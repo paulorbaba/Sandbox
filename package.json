@@ -1,6 +1,41 @@
 {
-  "name": "pagina-cenografica",
+  "name": "sadia-on-lek-trek-live",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "start": "node server.js" }
+  "description": "Protótipo funcional da ativação Sadia ON — Lek Trek LIVE (palco virtual sincronizado com celulares).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false server/index.ts --dev",
+    "build": "vite build && esbuild server/index.ts --bundle --platform=node --format=esm --packages=external --target=node20 --outfile=dist/server.js",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "esbuild": "^0.28.2",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5",
+    "socket.io-client": "^4.8.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  }
 }

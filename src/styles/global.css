@@ -1,0 +1,285 @@
+:root {
+  --yellow: #ffd200;
+  --yellow-deep: #f5b800;
+  --red: #e30613;
+  --red-deep: #b0000c;
+  --red-glow: #ff3b30;
+  --ink: #111111;
+  --ink-2: #2b2b2b;
+  --muted: #5d5a55;
+  --cream: #fbf8f1;
+  --line: #e6e0d4;
+  --white: #ffffff;
+  --dark: #120405;
+  --ok: #19a34a;
+  --radius: 16px;
+  --font-ui: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-brand: 'Poppins', system-ui, sans-serif;
+  --font-logo: 'Barlow Condensed', 'Poppins', sans-serif;
+  --focus: 0 0 0 3px #fff, 0 0 0 6px #111;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 10px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ───────── Logo (wordmark provisório; substituir pelo arquivo oficial) ───────── */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.05em;
+  line-height: 1;
+  font-size: 32px;
+  user-select: none;
+  white-space: nowrap;
+}
+.logo-sadia {
+  font-family: var(--font-logo);
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: -0.035em;
+  font-size: 1.12em;
+  transform: translateY(-0.02em);
+}
+.logo-on {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-brand);
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+.logo-on svg {
+  width: 0.92em;
+  height: 0.92em;
+  margin-right: -0.01em;
+  transform: translateY(0.01em);
+}
+.logo.on-dark .logo-on {
+  color: #fff;
+}
+
+/* ───────── Botões ───────── */
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  min-height: 54px;
+  padding: 0 28px;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.12s ease, filter 0.15s ease, background 0.15s ease;
+  text-decoration: none;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 6px 0 -1px var(--red-deep), 0 10px 22px -8px rgba(227, 6, 19, 0.6);
+}
+.btn-primary:hover:not([disabled]) {
+  filter: brightness(1.06);
+}
+.btn-dark {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  color: inherit;
+  border: 2px solid currentColor;
+}
+.btn-block {
+  width: 100%;
+}
+.btn-sm {
+  min-height: 40px;
+  font-size: 14px;
+  padding: 0 16px;
+}
+.link-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 10px 6px;
+  min-height: 44px;
+  font-weight: 600;
+  font-size: 16px;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+}
+.pill-outline {
+  border: 3px solid var(--yellow);
+  background: #fff;
+  color: var(--ink);
+}
+.pill-yellow {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.pill-red {
+  background: var(--red);
+  color: #fff;
+}
+.pill-dark {
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  border: 2px solid var(--yellow);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  background: currentColor;
+}
+
+.brand-headline {
+  font-family: var(--font-brand);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.burst {
+  position: relative;
+  display: inline-block;
+}
+.burst::before,
+.burst::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0.7em;
+  height: 0.7em;
+  transform: translateY(-50%);
+  background:
+    linear-gradient(var(--burst-color, var(--red)), var(--burst-color, var(--red))) 0 20% / 100% 0.09em no-repeat,
+    linear-gradient(var(--burst-color, var(--red)), var(--burst-color, var(--red))) 20% 50% / 80% 0.09em no-repeat,
+    linear-gradient(var(--burst-color, var(--red)), var(--burst-color, var(--red))) 0 80% / 100% 0.09em no-repeat;
+}
+.burst::before {
+  right: 100%;
+  margin-right: 0.12em;
+  transform: translateY(-50%) scaleX(-1) skewY(8deg);
+}
+.burst::after {
+  left: 100%;
+  margin-left: 0.12em;
+  transform: translateY(-50%) skewY(8deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-reduced-motion='true'] *,
+html[data-reduced-motion='true'] *::before,
+html[data-reduced-motion='true'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}

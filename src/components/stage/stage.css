@@ -1,0 +1,924 @@
+/* Palco virtual — coordenadas de design 1920×1080, escalado para caber. */
+.stage-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050101;
+}
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  color: #fff;
+  font-family: var(--font-ui);
+  contain: layout paint;
+  --glow: calc(0.35 + var(--intensity) * 0.65);
+}
+
+/* ───── Sala ───── */
+.room {
+  position: absolute;
+  inset: 0;
+}
+.rib-glow {
+  stroke: #ff2a1f;
+  stroke-width: 15;
+  stroke-linecap: round;
+  opacity: 0.16;
+}
+.rib-core {
+  stroke: #ff5a4a;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+.ribs {
+  opacity: var(--glow);
+  transition: opacity 0.6s ease;
+}
+.ribs > g {
+  animation: rib-chase calc(var(--beat) * 4) ease-in-out infinite;
+}
+.ribs.floor {
+  opacity: calc(var(--glow) * 0.8);
+}
+@keyframes rib-chase {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ───── BG curvo 16:9 ───── */
+.bg-panel {
+  position: absolute;
+  left: 700px;
+  top: 140px;
+  width: 1160px;
+  height: 652px;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
+}
+.bg-curve {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bg-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 14%, transparent 86%, rgba(0, 0, 0, 0.32)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 30%);
+}
+.bg-frame {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+.bg-copy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 40px 60px 120px 220px; /* o LED oval cobre a lateral esquerda do painel */
+  animation: copy-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.bg-panel[data-mode='yellow'] .bg-copy {
+  color: var(--ink);
+  padding-bottom: 140px;
+}
+@keyframes copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.stage .bg-h1 {
+  margin: 0;
+  font-size: 150px;
+  --burst-color: var(--red);
+}
+.stage .bg-h1.white {
+  color: #fff;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
+}
+.stage .bg-h1 .yellow {
+  color: var(--yellow);
+}
+.stage .bg-h1 .red {
+  color: var(--red);
+}
+.stage .bg-drop {
+  font-size: 140px;
+}
+.stage .bg-kicker {
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 30px;
+  color: var(--yellow);
+}
+.stage .bg-sub {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 4px 22px;
+  border-radius: 999px;
+}
+.stage .bg-sub.dark {
+  background: none;
+  color: var(--ink);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.stage .bg-count {
+  font-family: var(--font-brand);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 330px;
+  line-height: 1;
+  color: var(--yellow);
+  text-shadow: 0 0 60px rgba(255, 120, 0, 0.6);
+  animation: count-pop 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@keyframes count-pop {
+  from {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ───── LED oval ───── */
+.led-oval {
+  position: absolute;
+  left: 175px;
+  top: 80px;
+  width: 670px;
+  height: 920px;
+}
+.led-bezel {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 210deg,
+    #6d3510,
+    #f6c983,
+    #b8722f,
+    #ffe4ad,
+    #8a4818,
+    #e8ae63,
+    #fff0c9,
+    #9a5520,
+    #6d3510
+  );
+  box-shadow:
+    0 0 calc(40px + var(--intensity) * 90px) rgba(255, 50, 30, calc(0.18 + var(--intensity) * 0.35)),
+    0 40px 80px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 3px rgba(255, 240, 200, 0.5);
+}
+.led-screen {
+  position: absolute;
+  left: 25px;
+  top: 25px;
+  width: 620px;
+  height: 870px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 45%, #1d1a1a 0%, #0b0909 55%, #030202 100%);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 0 4px #2b1408;
+}
+.led-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 62%, rgba(255, 60, 30, calc(var(--intensity) * 0.22)), transparent 60%);
+  animation: led-breathe calc(var(--beat) * 2) ease-in-out infinite;
+}
+@keyframes led-breathe {
+  50% {
+    opacity: 0.55;
+  }
+}
+.led-logo {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+.led-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 205px;
+  height: 560px;
+}
+.led-drift {
+  position: absolute;
+  inset: 0;
+  animation: drift 11s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from {
+    transform: translateX(-6px) translateY(2px);
+  }
+  to {
+    transform: translateX(6px) translateY(-2px);
+  }
+}
+.led-bounce {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 392px;
+  margin-left: -196px;
+  transform-origin: 50% 100%;
+  animation: bounce var(--beat) cubic-bezier(0.3, 0, 0.3, 1) infinite;
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(calc(1 + 0.006 + var(--intensity) * 0.008));
+  }
+}
+.led-lek {
+  -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+  width: 392px;
+  height: auto;
+  aspect-ratio: 636 / 646;
+  user-select: none;
+  filter: saturate(1.05) contrast(1.03);
+}
+/* luzes giratórias sobre os pratos (camada adicional; não deforma o personagem) */
+.platter {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.platter i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(255, 140, 40, 0.9) 70%, transparent 78% 100%);
+  animation: spin calc(var(--beat) * 2) linear infinite;
+  -webkit-mask: radial-gradient(circle, transparent 54%, #000 56% 70%, transparent 72%);
+  mask: radial-gradient(circle, transparent 54%, #000 56% 70%, transparent 72%);
+}
+.platter-l {
+  left: 47px;
+  top: 323px;
+  width: 132px;
+  height: 132px;
+  transform: scaleY(0.3);
+}
+.platter-r {
+  left: 270px;
+  top: 300px;
+  width: 92px;
+  height: 92px;
+  transform: scaleY(0.32);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.led-console {
+  position: relative;
+  margin: -3px auto 0;
+  width: 404px;
+  height: 92px;
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+  background: linear-gradient(180deg, #2a2a2c 0%, #151516 60%, #0c0c0d 100%);
+  border-top: 2px solid #4a4a4e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.eq {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+  height: 40px;
+}
+.eq span {
+  width: 13px;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(0deg, #ffd200, #ff7a1a 55%, #e30613);
+  transform-origin: 50% 100%;
+  animation: eq var(--beat) ease-in-out infinite alternate;
+  opacity: 0.92;
+}
+@keyframes eq {
+  from {
+    transform: scaleY(0.15);
+  }
+  to {
+    transform: scaleY(calc(0.35 + var(--intensity) * 0.65));
+  }
+}
+.console-strip {
+  width: 86%;
+  height: 5px;
+  border-radius: 4px;
+  background: #e30613;
+  box-shadow: 0 0 calc(8px + var(--intensity) * 18px) #ff2a1f;
+  opacity: calc(0.5 + var(--intensity) * 0.5);
+}
+.led-wave {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  width: 760px;
+  height: 56px;
+  margin-left: -380px;
+  filter: drop-shadow(0 0 10px rgba(255, 210, 0, 0.75));
+  animation: wave-slide calc(var(--beat) * 4) linear infinite;
+  opacity: calc(0.4 + var(--intensity) * 0.6);
+}
+@keyframes wave-slide {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(50px);
+  }
+}
+.led-reactions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.led-emoji {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+}
+.led-combo {
+  position: absolute;
+  left: 50%;
+  bottom: 118px;
+  transform: translateX(-50%);
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--yellow);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-weight: 800;
+  font-size: 26px;
+  white-space: nowrap;
+}
+.led-pixels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0) 1.1px, rgba(0, 0, 0, 0.09) 1.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+}
+.led-scan {
+  position: absolute;
+  inset: -20% 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0 46%, rgba(255, 255, 255, 0.05) 50%, transparent 54% 100%);
+  animation: scan 7s linear infinite;
+}
+@keyframes scan {
+  from {
+    transform: translateY(-40%);
+  }
+  to {
+    transform: translateY(40%);
+  }
+}
+
+/* ───── Fala do Lek Trek ───── */
+.lek-line {
+  position: absolute;
+  left: 780px;
+  top: 52px;
+  max-width: 760px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 22px 22px 22px 6px;
+  padding: 12px 22px 12px 14px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  animation: line-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  z-index: 4;
+}
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.lek-line-who {
+  flex: none;
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+.stage .lek-line-text {
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 1.2;
+}
+
+/* ───── Cabeçalho ───── */
+.stage-header {
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  top: 0;
+  height: 0;
+}
+.stage-brand {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 5;
+}
+.stage-brand-sep {
+  width: 3px;
+  height: 36px;
+  background: var(--yellow);
+  transform: skewX(-18deg);
+}
+.stage-brand-name {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.stage-brand-name small {
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.04em;
+}
+.stage-status {
+  position: absolute;
+  right: 0;
+  top: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 5;
+}
+.stage-live {
+  font-size: 20px;
+  padding: 8px 18px;
+}
+.stage-live .dot {
+  animation: rec-blink 1.4s steps(1) infinite;
+}
+@keyframes rec-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+.stage-count {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.stage-count strong {
+  color: var(--yellow);
+  font-size: 26px;
+}
+
+/* ───── HUD de energia ───── */
+.hud {
+  position: absolute;
+  left: 880px;
+  top: 836px;
+  width: 860px;
+  height: 178px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 18px 30px 18px 22px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(20, 3, 4, 0.92), rgba(8, 1, 1, 0.92));
+  border: 2px solid rgba(255, 210, 0, 0.45);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  z-index: 3;
+}
+.hud-ring {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  flex: none;
+}
+.hud-ring > svg {
+  transform: rotate(-90deg);
+}
+.ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 12;
+}
+.ring-fill {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.35s ease;
+}
+.hud.is-mission .ring-fill {
+  stroke: var(--red-glow);
+}
+.hud-power {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--yellow);
+}
+.hud.is-mission .hud-power {
+  color: #fff;
+}
+.hud-main {
+  flex: 1;
+  min-width: 0;
+}
+.hud-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.stage .hud-label {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: 40px;
+  letter-spacing: -0.01em;
+}
+.stage .hud-value {
+  font-weight: 900;
+  font-size: 54px;
+  color: var(--yellow);
+  font-variant-numeric: tabular-nums;
+}
+.hud-bar {
+  position: relative;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  margin: 6px 0 12px;
+}
+.hud-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #e30613, #ff7a1a 60%, #ffd200);
+  transition: width 0.3s ease;
+}
+.hud-fill.assisted {
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0 10px, transparent 10px 20px),
+    linear-gradient(90deg, #e30613, #ff7a1a 60%, #ffd200);
+  background-size: 28px 28px, 100% 100%;
+  animation: stripes 1s linear infinite;
+}
+@keyframes stripes {
+  to {
+    background-position: 28px 0, 0 0;
+  }
+}
+.hud-tick {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  margin-left: -1px;
+  background: rgba(0, 0, 0, 0.55);
+}
+.hud-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-weight: 700;
+  font-size: 19px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.chip.ok {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.chip.ready {
+  background: #fff;
+  color: var(--red);
+  animation: ready-glow 1.2s ease-in-out infinite alternate;
+}
+.chip.assist {
+  background: #fff;
+  color: var(--ink);
+}
+@keyframes ready-glow {
+  to {
+    box-shadow: 0 0 22px rgba(255, 210, 0, 0.9);
+  }
+}
+.hud.is-ready {
+  border-color: var(--yellow);
+}
+.hud-emojis {
+  display: inline-flex;
+  gap: 8px;
+  font-size: 24px;
+  margin-left: auto;
+}
+
+/* ───── QR de recepção ───── */
+.qr-reception {
+  position: absolute;
+  left: 880px;
+  top: 820px;
+  width: 960px;
+  height: 230px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 16px 30px 16px 16px;
+  border-radius: 30px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  z-index: 3;
+  animation: line-in 0.5s ease both;
+}
+.stage .qr-copy h3 {
+  margin: 4px 0 6px;
+  font-size: 44px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stage .qr-kicker {
+  margin: 0;
+  font-weight: 700;
+  color: var(--red);
+  font-size: 20px;
+}
+.stage .qr-url {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--muted);
+  word-break: break-all;
+}
+.qr-counts {
+  display: flex;
+  gap: 12px;
+}
+.qr-counts span {
+  background: var(--cream);
+  border: 2px solid var(--yellow);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-size: 19px;
+}
+.qr-counts strong {
+  font-size: 22px;
+}
+.qr-mini {
+  position: absolute;
+  right: 44px;
+  top: 760px;
+  display: none;
+}
+.stage[data-phase] .qr-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  right: 30px;
+  top: 836px;
+  background: #fff;
+  color: var(--ink);
+  padding: 8px 8px 6px;
+  border-radius: 18px;
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+  z-index: 4;
+}
+.stage:has(.qr-mini) .hud {
+  width: 800px;
+}
+
+/* ───── Pulsos ───── */
+.clap-pulse {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255, 210, 0, 0.35), transparent 55%);
+  animation: clap 0.9s ease-out both;
+  z-index: 6;
+}
+@keyframes clap {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.drop-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 245, 200, 0.75), rgba(255, 210, 0, 0.25) 60%, transparent);
+  animation: clap 0.9s ease-out both;
+  z-index: 7;
+}
+
+/* ───── Fachada 9:16 ───── */
+.facade {
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  width: 552px;
+  height: 980px;
+  margin-left: -276px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #111, 0 30px 90px rgba(0, 0, 0, 0.8);
+}
+.facade.is-yellow {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.facade.is-dark {
+  background: radial-gradient(ellipse at 50% 30%, #3b0508, #120203 70%);
+}
+.facade-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 34px 36px;
+  gap: 18px;
+  text-align: center;
+}
+.stage .facade-h {
+  font-size: 92px;
+  margin: 8px 0 0;
+  --burst-color: var(--red);
+}
+.stage .facade-h.white {
+  color: #fff;
+}
+.stage .facade-h .red {
+  color: var(--red);
+}
+.facade-lek {
+  width: 440px;
+  margin-top: auto;
+}
+.stage .facade-call {
+  margin: 0;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 34px;
+}
+.facade-qr {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #fff;
+  border-radius: 22px;
+  padding: 10px 26px 10px 10px;
+  font-weight: 800;
+  font-size: 26px;
+  text-align: left;
+  line-height: 1.1;
+}
+.facade-ring {
+  position: relative;
+  margin-top: 30px;
+}
+.facade-ring > svg {
+  transform: rotate(-90deg);
+}
+.facade-ring .ring-track,
+.facade-ring .ring-fill {
+  stroke-width: 26;
+}
+.facade-ring span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 92px;
+}
+.facade-status {
+  font-size: 26px;
+  padding: 10px 26px;
+}
+.facade-emojis {
+  display: flex;
+  gap: 30px;
+  font-size: 60px;
+  margin-top: auto;
+  margin-bottom: 30px;
+}
+.facade-emojis .pop {
+  animation: emoji-pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+@keyframes emoji-pop {
+  40% {
+    transform: scale(1.5) translateY(-12px);
+  }
+}
+
+.stage[data-view='fachada'] .room ellipse {
+  display: none;
+}
+.stage[data-view='fachada'] .ribs {
+  opacity: calc(var(--glow) * 0.6);
+}
+
+/* ───── Movimento reduzido ───── */
+.stage[data-rm='true'] .ribs > g,
+.stage[data-rm='true'] .led-drift,
+.stage[data-rm='true'] .led-bounce,
+.stage[data-rm='true'] .led-wave,
+.stage[data-rm='true'] .led-scan,
+.stage[data-rm='true'] .eq span,
+.stage[data-rm='true'] .platter i,
+.stage[data-rm='true'] .led-vignette {
+  animation: none !important;
+}
